@@ -34,5 +34,11 @@ jobs:
 
       - name: Run Tests with Pytest
         run: |
-          python -m pytest ./tests/account_tests.py
-          
+          python -m pytest ./tests/account_tests.py  --junitxml=junit/test-results-${{ matrix.python-version }}.xml
+
+      - name: Publish test results
+        if: ${{ always() }}
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: |
+            junit/test-results-${{ matrix.python-version }}.xml
